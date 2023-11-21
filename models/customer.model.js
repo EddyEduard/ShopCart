@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const customerSchema = mongoose.Schema({
     first_name: {
         type: String,
-        default: ""
+        default: "",
+        minLength: 3
     },
     last_name: {
         type: String,
-        default: ""
+        default: "",
+        minLength: 3
     },
     email: {
         type: String,
@@ -16,12 +18,15 @@ const customerSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
-        minLength: 6
+        required: true
     },
     phone: {
         type: String,
         minLength: 10,
+        default: ""
+    },
+    image: {
+        type: String,
         default: ""
     },
     address: {

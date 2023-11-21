@@ -22,4 +22,4 @@ const cartSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.connection.useDb("ShopCart").model("cart", cartSchema);
+module.exports = mongoose.connection.useDb("ShopCart").model("carts", cartSchema);

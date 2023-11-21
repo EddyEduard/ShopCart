@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderSchema = mongoose.Schema({
+const reviewSchema = mongoose.Schema({
     customer_id: {
         type: String,
         required: true
@@ -30,4 +30,4 @@ const orderSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.connection.useDb("ShopCart").model("orders", orderSchema);
+module.exports = mongoose.connection.useDb("ShopCart").model("reviews", reviewSchema);
