@@ -1,6 +1,8 @@
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const pino = require("pino");
 
@@ -37,6 +39,8 @@ app.use(express.json({
     limit: "10gb",
     extended: true
 }));
+app.use(cookieParser());
+app.use(methodOverride("_method"));
 app.use(express.static("./public"));
 
 app.set("view engine", "ejs");
@@ -46,8 +50,21 @@ app.set("view engine", "ejs");
 const router = require("./router");
 app.use("/", router);
 
+// Import helpers.
+
+const helpers_for = {
+    faker: require("./helpers/faker.helper")
+};
+
 // Server implementation.
 
-server.listen(process.env.PORT, _ => {
+server.listen(process.env.PORT, async _ => {
+
+    // const customers = await helpers_for.faker.generateRandomCustomers(30, true);
+
+    // const products = await helpers_for.faker.generateRandomProducts(100, true);
+
+    // const reviews = await helpers_for.faker.generateRandomReviewForProducts(150, customers, products, true);
+
     logger.info("Server running...");
 });
