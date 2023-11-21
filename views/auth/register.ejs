@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Shopping cart" />
+    <meta name="author" content="https://github.com/EddyEduard" />
+    <title>
+        Shop Cart - <%= title %>
+    </title>
+    <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../css/main.css" rel="stylesheet" />
+    <link href="../../css/auth.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+            <div class="col-md-8 col-lg-6">
+                <div class="register d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <h3 class="login-heading mb-4">Welcome to Shop Cart! - Sign Up</h3>
+                                <form action="/auth/register" method="POST">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="firstNameInput" name="firstName"
+                                            placeholder="John">
+                                        <label for="firstNameInput">First name</label>
+                                        <% if (isError) { %>
+                                        <span class="text-danger">
+                                            <%= error.status == 400 && error.message.context.key == "firstName" ? error.message.message : "" %></span>
+                                        <% } %>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="lastNameInput" name="lastName"
+                                            placeholder="Doe">
+                                        <label for="lastNameInput">Last name</label>
+                                        <% if (isError) { %>
+                                        <span class="text-danger">
+                                            <%= error.status == 400 && error.message.context.key == "lastName" ? error.message.message : "" %></span>
+                                        <% } %>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="emailInput" name="email"
+                                            placeholder="name@example.com">
+                                        <label for="emailInput">Email address</label>
+                                        <% if (isError) { %>
+                                        <span class="text-danger">
+                                            <%= error.status == 400 && error.message.context.key == "email" ? error.message.message : "" %></span>
+                                        <% } %>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="passwordInput" name="password"
+                                            placeholder="Password">
+                                        <label for="passwordInput">Password</label>
+                                        <% if (isError) { %>
+                                        <span class="text-danger">
+                                            <%= error.status == 400 && error.message.context.key == "password" ? error.message.message : "" %></span>
+                                        <% } %>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="rememberPasswordCheck">
+                                        <label class="form-check-label" for="rememberPasswordCheck">
+                                            Remember password
+                                        </label>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button class="btn btn-lg btn-dark btn-login text-uppercase fw-bold mb-2"
+                                            type="submit">Sign Up</button>
+                                        <div class="text-center">
+                                            Already have an account? <a class="small" href="/auth/login">Sign In Now</a>
+                                            <br />
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 403 ? error.message : "" %>
+                                            </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
