@@ -1,0 +1,13 @@
+.navbar {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    background: #f1d244;
+}
+
+.form-control:focus {
+    border-color: #ced4da;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
