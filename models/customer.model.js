@@ -33,6 +33,8 @@ const customerSchema = mongoose.Schema({
         type: {
             country: {
                 type: String,
+                required: true,
+                minLength: 5,
                 default: ""
             },
             state: {
@@ -41,10 +43,20 @@ const customerSchema = mongoose.Schema({
             },
             city: {
                 type: String,
+                required: true,
+                minLength: 3,
                 default: ""
             },
             street: {
                 type: String,
+                required: true,
+                minLength: 10,
+                default: ""
+            },
+            postal_code: {
+                type: String,
+                required: true,
+                minLength: 5,
                 default: ""
             },
             vat_type: {
