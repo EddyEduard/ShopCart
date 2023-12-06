@@ -91,6 +91,7 @@
                         <% } %>
                     </div>
                     <p class="lead"><%= product.description %></p>
+                    <% if (product.stock > 0) { %>
                     <form action="/shop/products/<%= product.id %>" method="POST">
                         <div class="d-flex">
                             <div class="col-md-3 d-flex">
@@ -111,6 +112,7 @@
                             </button>
                         </div>
                     </form>
+                    <% } %>
                 </div>
             </div>
         </div>

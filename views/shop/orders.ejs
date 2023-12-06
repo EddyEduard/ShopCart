@@ -73,22 +73,22 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <% if (orders.length) { %>
-                    <% orders.forEach((order, index) => { %>
+                    <% if (orders.length > 0) { %>
+                    <% orders.forEach((order, i) => { %>
                     <div class="card">
                         <div class="card-header" id="headingOne">
                             <h5 class="mb-0">
                                 <a href="/shop/orders?order=<%= order.id %>" class="btn btn-link" data-toggle="collapse"
-                                    data-target="#collapse<%= index %>" aria-expanded="true"
-                                    aria-controls="collapse<%= index %>">
-                                    Order #<%= index + 1 %> | Date: <%= order.date %>
+                                    data-target="#collapse<%= i %>" aria-expanded="true"
+                                    aria-controls="collapse<%= i %>">
+                                    Order #<%= i + 1 %> | Date: <%= order.date %>
                                 </a>
                             </h5>
                         </div>
-                        <div id="collapse<%= index %>" class="collapse <%= showOrder == order.id ? "show" : "" %>"
-                            aria-labelledby="heading<%= index %>" data-parent="#accordion">
+                        <div id="collapse<%= i %>" class="collapse <%= showOrder == order.id ? "show" : "" %>"
+                            aria-labelledby="heading<%= i %>" data-parent="#accordion">
                             <div class="card-body">
-                                <% order.products.forEach((product, index) => { %>
+                                <% order.products.forEach((product, j) => { %>
                                 <div class="card rounded-3 mb-4">
                                     <div class="card-body p-4">
                                         <div class="row d-flex justify-content-between align-items-center">
@@ -108,7 +108,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <h5 class="mb-0">
-                                                    $<%= ((product.price - (product.price * (product.discount / 100))) * order.items[index].quantity).toFixed(2) %>
+                                                    $<%= ((product.price - (product.price * (product.discount / 100))) * order.items[j].quantity).toFixed(2) %>
                                                 </h5>
                                             </div>
                                         </div>
