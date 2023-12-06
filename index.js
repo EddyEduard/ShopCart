@@ -41,8 +41,9 @@ app.use(express.json({
 }));
 app.use(cookieParser());
 app.use(methodOverride("_method"));
-app.use(express.static("./public"));
+app.use(express.static(__dirname + "/public"));
 
+app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
 // Main router API.
