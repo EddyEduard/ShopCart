@@ -242,7 +242,7 @@ exports.checkout_payment = async function (req, res) {
                     await stripe.invoiceItems.create({
                         customer: stripeCustomer.id,
                         quantity: item.quantity,
-                        unit_amount_decimal: (product.price - (product.price * (product.discount / 100))) * 100,
+                        unit_amount_decimal: parseFloat(((product.price - (product.price * (product.discount / 100))) * 100).toFixed(2)),
                         tax_behavior: "exclusive",
                         currency: "usd",
                         description: product.name
@@ -273,6 +273,15 @@ exports.checkout_payment = async function (req, res) {
                         });
 
                         await order.save();
+
+                        for (const item of cart.items) {
+                            product = await Product.findById(item.product_id);
+
+                            if (product.stock > 0)
+                                product.stock = product.stock - item.quantity;
+
+                            await Product.findByIdAndUpdate(product.id, product);
+                        }
 
                         cart.items = [];
 
@@ -418,8 +427,7 @@ exports.checkout_payment = async function (req, res) {
 exports.orders = async function (req, res) {
     const customerId = req.customer.id;
     const showOrder = req.query.order != undefined ? req.query.order : "";
-    const orders = [], products = [];
-    let = null, totalPrice = 0;
+    let orders = [], products = [], product = null;
 
     try {
         const customer = await Customer.findById(customerId);
@@ -427,9 +435,10 @@ exports.orders = async function (req, res) {
         const customerOrders = await Order.find({ customer_id: customerId });
 
         for (const order of customerOrders) {
+            products = [];
+
             for (const item of order.items) {
                 product = await Product.findById(item.product_id);
-                totalPrice += (product.price - (product.price * (product.discount / 100))) * item.quantity;
                 products.push(product);
             }
 
