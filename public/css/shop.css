@@ -120,6 +120,12 @@ hr.dashed {
     line-height: 1;
 }
 
+.payment-form .products .text-secondary {
+    margin-top: 10px;
+    padding-top: 19px;
+    line-height: 1;
+}
+
 .payment-form .card-details {
     padding: 25px 25px 15px;
 }
@@ -156,4 +162,31 @@ hr.dashed {
     .payment-form .card-details button {
         margin-top: 2em;
     }
+}
+
+.payment-method .card {
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid lightgray;
+}
+
+.payment-method .card .card-number span {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.payment-method .card .card-expires {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+.payment-method .card .card-edit {
+    display: flex;
+    height: 100%;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
 }

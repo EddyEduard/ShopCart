@@ -16,21 +16,24 @@ const cardNumberElement = elements.create("cardNumber", {
     placeholder: "XXXX XXXX XXXX XXXX",
 });
 
-cardNumberElement.mount("#card-number");
+if (document.getElementById("card-number") !== null)
+    cardNumberElement.mount("#card-number");
 
 const cardExpiryElement = elements.create("cardExpiry", {
     style: style,
     placeholder: "MM / YY",
 });
 
-cardExpiryElement.mount("#card-expiration");
+if (document.getElementById("card-expiration") !== null)
+    cardExpiryElement.mount("#card-expiration");
 
 const cardCvcElement = elements.create("cardCvc", {
     style: style,
     placeholder: "CVC",
 });
 
-cardCvcElement.mount("#card-cvc");
+if (document.getElementById("card-cvc") !== null)
+    cardCvcElement.mount("#card-cvc");
 
 // Proceed the payment for products.
 
@@ -40,6 +43,7 @@ const paymentButtonTextTag = document.getElementById("payment-button-text");
 const paymentButtonSpinnerTag = document.getElementById("payment-button-spinner");
 const paymentSuccessedTag = document.getElementById("payment-successed");
 const paymentFailedTag = document.getElementById("payment-failed");
+const downloadInvoiceTag = document.getElementById("download-invoice");
 
 const paymentStarted = _ => {
     paymentButtonTextTag.classList.add("d-none");
@@ -61,30 +65,39 @@ const paymentFailed = _ => {
     paymentFailedTag.classList.remove("d-none");
 };
 
+const payForProducts = (token, cardHolder, isUpdateCard) => {
+    fetch("/shop/checkout?isUpdateCard=" + isUpdateCard, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: token, nameOnCard: cardHolder }),
+    }).then(response => response.json())
+        .then(data => {
+            paymentButtonTag.classList.add("d-none");
+            downloadInvoiceTag.href = data.invoice;
+
+            paymnetEnded();
+
+            paymentSuccessed();
+        })
+        .catch(_ => {
+            paymnetEnded();
+
+            paymentFailed();
+        });
+};
+
 paymentButtonTag.addEventListener("click", _ => {
+    const cardHolder = cardHolderTag != null ? cardHolderTag.value : "";
     const options = {
-        name: cardHolderTag.value
+        name: cardHolder
     };
 
     paymentStarted();
 
-    stripe.createToken(cardNumberElement, options).then(result => {
-        fetch("/shop/checkout", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ token: result.token.id }),
-        }).then(response => response.json())
-            .then(_ => {
-                paymnetEnded();
-
-                paymentSuccessed();
-            })
-            .catch(_ => {
-                paymnetEnded();
-
-                paymentFailed();
-            });
-    });
+    if (hasPaymentMethodAdded && !isUpdateCard)
+        payForProducts("", "", false);
+    else
+        stripe.createToken(cardNumberElement, options).then(result => payForProducts(result.token.id, cardHolder, isUpdateCard));
 });
