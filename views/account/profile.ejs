@@ -37,7 +37,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/account/profile">My profile</a></li>
                             <li><a class="dropdown-item" href="/account/billing">Billing</a></li>
-                            <li><a class="dropdown-item" href="/account/payment-method">Payment method</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
@@ -70,6 +69,193 @@
 
     <!-- Profile section -->
 
+    <section class="py-5">
+        <div class="container">
+            <div class="main-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <img src="<%= customer.image != "" ? customer.image : 'https://bootdey.com/img/Content/avatar/avatar6.png' %>"
+                                        alt="Profile image" class="rounded-circle p-1 bg-primary" width="110">
+                                    <div class="mt-3">
+                                        <h4><%= customer.first_name %> <%= customer.last_name %></h4>
+                                        <p class="text-secondary mb-1"><i class="bi bi-envelope-fill"></i>
+                                            <%= customer.email %></p>
+                                        <p class="text-muted font-size-sm"><i class="bi bi-telephone-fill"></i>
+                                            <%= customer.phone %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/account/profile" method="POST">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">First Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="firstName"
+                                                placeholder="e.g. John" value="<%= customer.first_name %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "firstName" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Last Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="lastName"
+                                                placeholder="e.g. Doe" value="<%= customer.last_name %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "lastName" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Email</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control"
+                                                placeholder="e.g. john_doe@example.com" name="email"
+                                                value="<%= customer.email %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "email" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Phone</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="phone"
+                                                placeholder="e.g. 0722 816 902" value="<%= customer.phone %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "phone" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Image</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="image"
+                                                placeholder="e.g. https://bootdey.com/img/Content/avatar/avatar6.png"
+                                                value="<%= customer.image %>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <button type="submit" class="btn btn-warning px-4">Save</button>
+                                            <% if (isError) { %>
+                                            <br /><br />
+                                            <span class="text-danger">
+                                                <%= error.status == 403 && typeError == "PROFILE" ? error.message : "" %>
+                                            </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/account/change_password" method="POST">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Old password</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="password" class="form-control" name="oldPassword">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "oldPassword" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">New password</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="password" class="form-control" name="newPassword">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "newPassword" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <button type="submit" class="btn btn-warning px-4">Save</button>
+                                            <% if (isError) { %>
+                                            <br /><br />
+                                            <span class="text-danger">
+                                                <%= error.status == 403 && typeError == "PASSWORD" ? error.message : "" %>
+                                            </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/account/profile?_method=DELETE" method="POST">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <div class="alert alert-warning" role="alert">
+                                                <h4 class="alert-heading">Delete account!</h4>
+                                                <p>Warning: All of your data will be completely destroyed. This cannot
+                                                    be reversed.</p>
+                                                <hr>
+                                                <p class="mb-0">Please type the word "DELETE" below to confirm.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Delete confirm</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="deleteConfirm"
+                                                placeholder="DELETE">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "deleteConfirm" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <button type="submit" class="btn btn-danger px-4">Delete</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
 
     <footer class="py-5 bg-dark">
@@ -77,8 +263,6 @@
             <p class="m-0 text-center text-white">Copyright &copy; Shop Cart <%= new Date().getFullYear() %></p>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

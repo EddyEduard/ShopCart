@@ -37,7 +37,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/account/profile">My profile</a></li>
                             <li><a class="dropdown-item" href="/account/billing">Billing</a></li>
-                            <li><a class="dropdown-item" href="/account/payment-method">Payment method</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
@@ -68,7 +67,156 @@
         </div>
     </header>
 
-    <!-- Profile section -->
+    <!-- Billing section -->
+
+    <section class="py-5">
+        <div class="container">
+            <div class="main-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <img src="<%= customer.image != "" ? customer.image : 'https://bootdey.com/img/Content/avatar/avatar6.png' %>"
+                                        alt="Profile image" class="rounded-circle p-1 bg-primary" width="110">
+                                    <div class="mt-3">
+                                        <h4><%= customer.first_name %> <%= customer.last_name %></h4>
+                                        <p class="text-secondary mb-1"><i class="bi bi-envelope-fill"></i>
+                                            <%= customer.email %></p>
+                                        <p class="text-muted font-size-sm"><i class="bi bi-telephone-fill"></i>
+                                            <%= customer.phone %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/account/billing" method="POST">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Country</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select id="country" class="form-control form-select" name="country"
+                                                value="<%= customer.address.country %>"
+                                                onchange="onSelectCountry(event)">
+                                            </select>
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "country" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">State (not required)</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="state"
+                                                placeholder="e.g. Prahova" value="<%= customer.address.state %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "state" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">City</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" placeholder="e.g. Baicoi"
+                                                name="city" value="<%= customer.address.city %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "city" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Street</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="street"
+                                                placeholder="e.g. Str. Horia, Nr. 36"
+                                                value="<%= customer.address.street %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "street" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Postal code</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" class="form-control" name="postalCode"
+                                                placeholder="e.g. 105200" value="<%= customer.address.postal_code %>">
+                                        </div>
+                                    </div>
+                                    <hr class="my-4">
+                                    <div class="row mb-3">
+                                        <div class="col-sm-12">
+                                            <div class="alert alert-warning" role="alert">
+                                                <h4 class="alert-heading">Tax company!</h4>
+                                                <p>Info: If you want to buy our products for your company, then we
+                                                    need your company's tax type and tax code.</p>
+                                                <hr>
+                                                <p class="mb-0">Select the value "--none--" if you don't want it
+                                                    buy the products for a company.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Tax Type</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <select id="vatType" class="form-control form-select" name="vatType"
+                                                value="<%= customer.address.vat_type %>"
+                                                onchange="onSelectVatType(event)">
+                                            </select>
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "vatType" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Tax Code</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="text" id="vatCode" class="form-control" name="vatCode"
+                                                value="<%= customer.address.vat_code %>">
+                                            <% if (isError) { %>
+                                            <span class="text-danger">
+                                                <%= error.status == 400 && error.message.context.key == "vatCode" ? error.message.message : "" %></span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <button type="submit" class="btn btn-warning px-4">Save</button>
+                                            <% if (isError) { %>
+                                            <br /><br />
+                                            <span class="text-danger">
+                                                <%= error.status == 403 && typeError == "BILLING" ? error.message : "" %>
+                                            </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
 
@@ -78,7 +226,16 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/billing.js"></script>
+    <script>
+        const country = '<%= customer.address.country %>';
+        const vatType = '<%= customer.address.vat_type %>';
+
+        if (country == "")
+            getTaxIDsByCountry("Australia", null, false, true);
+        else
+            getTaxIDsByCountry(country, vatType, true, true);
+    </script>
 </body>
 
 </html>

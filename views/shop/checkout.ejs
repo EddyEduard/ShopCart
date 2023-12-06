@@ -37,7 +37,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/account/profile">My profile</a></li>
                             <li><a class="dropdown-item" href="/account/billing">Billing</a></li>
-                            <li><a class="dropdown-item" href="/account/payment-method">Payment method</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
@@ -79,6 +78,7 @@
                     <div class="item">
                         <span
                             class="price">$<%= ((product.price - (product.price * (product.discount / 100))) * cart.items[index].quantity).toFixed(2) %></span>
+                        <span class="price text-muted text-decoration-line-through me-3">$<%= product.price %></span>
                         <p class="item-name"><%= product.name %></p>
                         <p class="item-description"><%= product.description.slice(0, 40) %> ... <a
                                 href="/shop/products/<%= product.id %>">More</a></p>
@@ -88,6 +88,9 @@
                     <div class="total">Shipping<span class="price">$<%= shippingPrice.toFixed(2) %></span></div>
                     <div class="total">Total (excluding VAT)<span
                             class="price">$<%= totalPriceExcludingVAT.toFixed(2) %></span></div>
+                    <div class="text-secondary">VAT – Romania (19% on $<%= totalPriceExcludingVAT.toFixed(2) %>)
+                        <span class="price">$<%= totalVAT.toFixed(2) %></span>
+                    </div>
                     <div class="total">Total (including VAT 19%)<span
                             class="price">$<%= totalPriceIncludingVAT.toFixed(2) %></span></div>
                     <br />
@@ -97,10 +100,69 @@
                 <div class="card-details">
                     <h3 class="title">Credit Card Details</h3>
                     <div class="row">
+                        <% if(customer.metadata.has_payment_method_added) { %>
+                        <div class="col-md-12">
+                            <div class="payment-method">
+                                <div class="card">
+                                    <div class="row">
+                                        <div class="col-sm-auto">
+                                            <div class="card-brand-icon">
+                                                <% if(customer.card.brand == "Visa") { %>
+                                                <img src="../../assets/img/visa.png" height="45" />
+                                                <% } %>
+                                                <% if(customer.card.brand == "MasterCard") { %>
+                                                <img src="../../assets/img/mastercard.png" height="45" />
+                                                <% } %>
+                                                <% if(customer.card.brand == "American Express") { %>
+                                                <img src="../../assets/img/american-express.png" height="45" />
+                                                <% } %>
+                                                <% if(customer.card.brand == "Discover") { %>
+                                                <img src="../../assets/img/discover.png" height="45" />
+                                                <% } %>
+                                                <% if(customer.card.brand == "JCB") { %>
+                                                <img src="../../assets/img/jcb.png" height="45" />
+                                                <% } %>
+                                                <% if(customer.card.brand == "Diners Club") { %>
+                                                <img src="../../assets/img/diners-club.png" height="45" />
+                                                <% } %>
+                                                <% if(customer.card.brand == "UnionPay") { %>
+                                                <img src="../../assets/img/union-pay.png" height="45" />
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-number">
+                                                <span><%= customer.card.brand %></span> •••• •••• ••••
+                                                <span><%= customer.card.last4 %></span>
+                                            </div>
+                                            <div class="card-expires">
+                                                <span>Expires <%= customer.card.exp_month %>
+                                                    <%= customer.card.exp_year %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="card-edit">
+                                                <% if(customer.metadata.has_payment_method_added && !isUpdateCard) { %>
+                                                <a href="/shop/checkout?isUpdateCard=true">
+                                                    <i class="bi bi-pencil"></i> EDIT
+                                                </a>
+                                                <% } else { %>
+                                                <a href="/shop/checkout" class="text-danger">
+                                                    <i class="bi bi-x"></i> CANCEL
+                                                </a>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if(!customer.metadata.has_payment_method_added || (customer.metadata.has_payment_method_added && isUpdateCard)) { %>
                         <div class="form-group col-md-12">
                             <label for="card-holder">Card Holder</label>
                             <input id="card-holder" type="text" class="form-control" placeholder="Card Holder"
-                                aria-label="Card Holder" aria-describedby="basic-addon1">
+                                aria-label="Card Holder" value="<%= customer.card.name %>">
                         </div>
                         <div class="form-group col-md-12">
                             <label for="card-number">Card Number</label>
@@ -114,6 +176,7 @@
                             <label for="cvc">CVC</label>
                             <div class="form-control" id="card-cvc"></div>
                         </div>
+                        <% } %>
                         <div class="col-md-12">
                             <button type="button" id="payment" class="btn btn-warning w-100">
                                 <span id="payment-button-text">Payment</span>
@@ -130,6 +193,9 @@
                                 <hr>
                                 <p class="mb-0">For more information about your order you can send us an e-mail or call
                                     us. Have a nice day!</p>
+                                <br />
+                                <a id="download-invoice" class="btn btn-secondary"><i class="bi bi-download"></i>
+                                    Donwload invoice</a>
                             </div>
                             <div id="payment-failed" class="alert alert-danger mt-4 d-none" role="alert">
                                 <h4 class="alert-heading">Payment failed!</h4>
@@ -152,8 +218,11 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const hasPaymentMethodAdded = '<%= customer.metadata.has_payment_method_added %>';
+        const isUpdateCard = '<%= isUpdateCard %>';
+    </script>
     <script src="../../js/checkout.js" async></script>
 </body>
 

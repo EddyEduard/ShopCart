@@ -37,7 +37,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/account/profile">My profile</a></li>
                             <li><a class="dropdown-item" href="/account/billing">Billing</a></li>
-                            <li><a class="dropdown-item" href="/account/payment-method">Payment method</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
@@ -74,6 +73,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
+                    <% if (products.length) { %>
                     <% products.forEach((product, index) => { %>
                     <div class="card rounded-3 mb-4">
                         <div class="card-body p-4">
@@ -120,6 +120,16 @@
                         </div>
                     </div>
                     <% }); %>
+                    <% } else { %>
+                    <div class="alert alert-info mt-4" role="alert">
+                        <h4 class="alert-heading">Opps, your cart is empty!</h4>
+                        <p>The cart is empty. Therefore, you need to select some products from the store in order to
+                            continue the purchase
+                            process</p>
+                        <a href="/shop/products" class="btn btn-warning"><i class="bi-cart-fill me-1"></i>
+                            Go to shopping</a>
+                    </div>
+                    <% } %>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
@@ -158,9 +168,11 @@
                                     <span><strong>$<%= totalPriceIncludingVAT.toFixed(2) %></strong></span>
                                 </li>
                             </ul>
+                            <% if (products.length) { %>
                             <a href="/shop/checkout" class="btn btn-warning btn-block btn-lg">
                                 Go to checkout
                             </a>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -175,7 +187,6 @@
             <p class="m-0 text-center text-white">Copyright &copy; Shop Cart <%= new Date().getFullYear() %></p>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
