@@ -1,6 +1,6 @@
-const Joi = require("joi")
+const Joi = require("joi");
 
-// Validation of the request data for user login.
+// Validation of the request data for customer login.
 exports.login = (req, res, next) => {
     const schema = Joi.object({
         email: Joi.string()
@@ -33,7 +33,7 @@ exports.login = (req, res, next) => {
         next();
 }
 
-// Validation of the request data for user register.
+// Validation of the request data for customer register.
 exports.register = (req, res, next) => {
     const schema = Joi.object({
         firstName: Joi.string()
