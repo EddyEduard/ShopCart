@@ -71,6 +71,7 @@ erDiagram
         date created_date
     }
     PRODUCT {
+        string id PK
         string(5) name
         string description
         string[] images
@@ -80,18 +81,21 @@ erDiagram
         date created_date
     }
     CART {
-        string customer_id
+        string id PK
+        string customer_id FK
         ITEM[] items
     }
     ORDER {
-        string customer_id
+        string id PK
+        string customer_id FK
         enum status
         ITEM[] items
         date created_date
     }
     REVIEW {
-        string customer_id
-        string product_id
+        string id PK
+        string customer_id FK
+        string product_id FK
         string(10) title
         string content
         date created_date
@@ -113,7 +117,7 @@ erDiagram
         integer exp_year
     }
     ITEM {
-        string product_id
+        string product_id FK
         number quantity
     }
 
@@ -121,6 +125,7 @@ erDiagram
     CUSTOMER ||--|| CARD : "has card"
     CUSTOMER ||--|| CART : "has cart"
     CUSTOMER ||--o{ ORDER : "has orders"
+    CUSTOMER ||--o{ REVIEW : "has reviews"
 
     PRODUCT ||--o{ REVIEW : "has reviews"
 
