@@ -140,4 +140,6 @@ erDiagram
 Distributed under the MIT License. See [MIT](https://github.com/EddyEduard/ShopCart/blob/master/LICENSE) for more information.
 
 ## Contact
-Rolaxit Innovation - [eduard_nicolae@yahoo.com](mailTo:eduard_nicolae@yahoo.com)
+Eduard-Nicolae - [eduard_nicolae@yahoo.com](mailTo:eduard_nicolae@yahoo.com)
+\
+Project link - [https://github.com/EddyEduard/ShopCart](https://github.com/EddyEduard/ShopCart.git)
