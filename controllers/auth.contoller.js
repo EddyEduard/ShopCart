@@ -76,11 +76,13 @@ exports.register = async function (req, res) {
             email: email,
             password: password,
             phone: "0000000000",
+            image: "",
             address: {
                 country: "",
                 state: "",
                 city: "",
                 street: "",
+                postal_code: "",
                 vat_type: "",
                 vat_code: ""
             },
