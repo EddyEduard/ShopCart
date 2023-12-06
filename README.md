@@ -45,7 +45,7 @@ node server.js
 - [Models](https://github.com/EddyEduard/ShopCart/tree/main/models)
 - [Views](https://github.com/EddyEduard/ShopCart/tree/main/views)
 - [Middlewares](https://github.com/EddyEduard/ShopCart/tree/main/middlewares)
-- [Routers](https://github.com/EddyEduard/ShopCart/tree/main/routers)
+- [Routes](https://github.com/EddyEduard/ShopCart/tree/main/routes)
 - [Helpers](https://github.com/EddyEduard/ShopCart/tree/main/helpers)
 - [Public](https://github.com/EddyEduard/ShopCart/tree/main/public)
 
