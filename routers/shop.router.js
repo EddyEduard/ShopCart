@@ -19,6 +19,8 @@ router.delete("/cart/:id", authorize_middleware.token, shop_controller.remove_pr
 
 router.get("/checkout", authorize_middleware.token, shop_controller.checkout);
 
-router.post("/checkout", authorize_middleware.token, shop_controller.checkout_payment);
+router.post("/checkout", authorize_middleware.token, shop_middleware.checkout_payment, shop_controller.checkout_payment);
+
+router.get("/orders", authorize_middleware.token, shop_controller.orders);
 
 module.exports = router;
