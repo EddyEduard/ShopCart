@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-// const index_router = require("./routers/index.router");
-// router.use("/", index_router);
+const index_router = require("./routers/index.router");
+router.use("/", index_router);
 
 const auth_router = require("./routers/auth.router");
 router.use("/auth", auth_router);
