@@ -45,7 +45,7 @@ node server.js
 - [Models](https://github.com/EddyEduard/ShopCart/tree/main/models)
 - [Views](https://github.com/EddyEduard/ShopCart/tree/main/views)
 - [Middlewares](https://github.com/EddyEduard/ShopCart/tree/main/middlewares)
-- [Routers](https://github.com/EddyEduard/ShopCart/tree/main/routers)
+- [Routes](https://github.com/EddyEduard/ShopCart/tree/main/routes)
 - [Helpers](https://github.com/EddyEduard/ShopCart/tree/main/helpers)
 - [Public](https://github.com/EddyEduard/ShopCart/tree/main/public)
 
@@ -64,6 +64,7 @@ erDiagram
         string(10) email
         string password
         string(10) phone
+        string image
         ADDRESS address
         CARD card
         object metadata
@@ -100,11 +101,11 @@ erDiagram
         date created_date
     }
     ADDRESS {
-        string(5) country
+        string country
         string state
-        string(3) city
-        string(10) street
-        string(5) postal_code
+        string city
+        string street
+        string postal_code
         string vat_type
         string vat_code
     }
