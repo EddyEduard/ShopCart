@@ -21,7 +21,8 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#"><img src="../../assets/favicon.png" width="30" class="mb-1" />Shop Cart</a>
+            <a class="navbar-brand" href="/shop/products"><img src="../../assets/favicon.png" width="30"
+                    class="mb-1" />Shop Cart</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -97,6 +98,7 @@
                     <hr class="dashed" />
                     <div class="total">Total<span class="price">$<%= totalPriceIncludingVAT.toFixed(2) %></span></div>
                 </div>
+                <% if(isBillingFilled) { %>
                 <div class="card-details">
                     <h3 class="title">Credit Card Details</h3>
                     <div class="row">
@@ -206,6 +208,20 @@
                         </div>
                     </div>
                 </div>
+                <% } else { %>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-info mt-0 m-4" role="alert">
+                            <h4 class="alert-heading">Opps, you didn't fill in your billing information!</h4>
+                            <p>We need this information to be able to create your invoice for the products purchased.
+                                Please
+                                fill in your billing details and then return to the product payment page.</p>
+                            <a href="/account/billing" class="btn btn-warning"><i class="bi-receipt me-1"></i>
+                                Go to billing</a>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
     </section>
@@ -221,7 +237,7 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         const hasPaymentMethodAdded = '<%= customer.metadata.has_payment_method_added %>';
-        const isUpdateCard = '<%= isUpdateCard %>';
+        const isUpdateCard = '<%= isUpdateCard ?? false %>';
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/checkout.js" async></script>

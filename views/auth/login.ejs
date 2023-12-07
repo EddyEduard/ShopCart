@@ -28,7 +28,7 @@
                                 <form action="/auth/login" method="POST">
                                     <div class="form-floating mb-3">
                                         <input type="email" class="form-control" id="emailInput" name="email"
-                                            placeholder="name@example.com">
+                                            placeholder="name@example.com" value="<%= credentials.email %>">
                                         <label for="emailInput">Email address</label>
                                         <% if (isError) { %>
                                         <span class="text-danger">
@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="password" class="form-control" id="passwordInput" name="password"
-                                            placeholder="Password">
+                                            placeholder="Password" value="<%= credentials.password %>">
                                         <label for="passwordInput">Password</label>
                                         <% if (isError) { %>
                                         <span class="text-danger">
@@ -45,8 +45,8 @@
                                         <% } %>
                                     </div>
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="rememberPasswordCheck">
+                                        <input type="checkbox" class="form-check-input" id="rememberPasswordCheck"
+                                            name="rememberPassword" checked value="true">
                                         <label class="form-check-label" for="rememberPasswordCheck">
                                             Remember password
                                         </label>

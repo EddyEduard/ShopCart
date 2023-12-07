@@ -21,7 +21,8 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#"><img src="../../assets/favicon.png" width="30" class="mb-1" />Shop Cart</a>
+            <a class="navbar-brand" href="/shop/products"><img src="../../assets/favicon.png" width="30"
+                    class="mb-1" />Shop Cart</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -74,16 +75,41 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <% if (orders.length > 0) { %>
+                    <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading">Wow, you have some orders there!</h4>
+                        <p>We found <%= orders.length %> <%= orders.length > 1 ? "orders" : "order" %> for you. You can
+                            click on one of them to see more details about it.</p>
+                        <hr>
+                        <p class="mb-0">You're probably wondering what it means "UNDELIVERED", "SHIPPED" or "DELIVERED"?
+                            These are the order statuses.
+                        </p>
+                        <br />
+                        <p>
+                            <span class="p-4"><b>UNDELIVERED</b>: Your order has been registered and is being
+                                shipped.</span>
+                        </p>
+                        <p>
+                            <span class="p-4"><b>SHIPPED</b>: Your order is being shipped.</span>
+                        </p>
+                        <p>
+                            <span class="p-4"><b>DELIVERED</b>: Your order has been successfully delivered.</span>
+                        </p>
+                    </div>
                     <% orders.forEach((order, i) => { %>
                     <div class="card">
                         <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
-                                <a href="/shop/orders?order=<%= order.id %>" class="btn btn-link" data-toggle="collapse"
-                                    data-target="#collapse<%= i %>" aria-expanded="true"
-                                    aria-controls="collapse<%= i %>">
-                                    Order #<%= i + 1 %> | Date: <%= order.date %>
-                                </a>
-                            </h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-0">
+                                    <a href="/shop/orders?order=<%= order.id %>" class="btn btn-link"
+                                        data-toggle="collapse" data-target="#collapse<%= i %>" aria-expanded="true"
+                                        aria-controls="collapse<%= i %>">
+                                        Order #<%= i + 1 %> | Date: <%= order.date %>
+                                    </a>
+                                </h5>
+                                <span
+                                    class="float-right mt-2 badge <%= order.status == 'UNDELIVERED' ? 'bg-secondary' : order.status == 'DELIVERED' ? 'bg-success' : 'bg-primary'  %>"
+                                    style="height: fit-content;"><%= order.status %></span>
+                            </div>
                         </div>
                         <div id="collapse<%= i %>" class="collapse <%= showOrder == order.id ? "show" : "" %>"
                             aria-labelledby="heading<%= i %>" data-parent="#accordion">
@@ -119,6 +145,15 @@
                         </div>
                     </div>
                     <% }); %>
+                    <% } else { %>
+                    <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading">Opps, you have no order!</h4>
+                        <p>We have some interesting products for you to purchase. They are very useful and have a very
+                            good rating given by our
+                            customers. Give them a try!</p>
+                        <a href="/shop/products" class="btn btn-warning"><i class="bi-cart-fill me-1"></i>
+                            Go to shopping</a>
+                    </div>
                     <% } %>
                 </div>
             </div>

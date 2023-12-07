@@ -21,7 +21,8 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#"><img src="../../assets/favicon.png" width="30" class="mb-1" />Shop Cart</a>
+            <a class="navbar-brand" href="/shop/products"><img src="../../assets/favicon.png" width="30"
+                    class="mb-1" />Shop Cart</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -181,7 +182,8 @@
                                             <h6 class="mb-0">Old password</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            <input type="password" class="form-control" name="oldPassword">
+                                            <input type="password" class="form-control" name="oldPassword"
+                                                placeholder="Old password">
                                             <% if (isError) { %>
                                             <span class="text-danger">
                                                 <%= error.status == 400 && error.message.context.key == "oldPassword" ? error.message.message : "" %></span>
@@ -193,7 +195,8 @@
                                             <h6 class="mb-0">New password</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            <input type="password" class="form-control" name="newPassword">
+                                            <input type="password" class="form-control" name="newPassword"
+                                                placeholder="New password">
                                             <% if (isError) { %>
                                             <span class="text-danger">
                                                 <%= error.status == 400 && error.message.context.key == "newPassword" ? error.message.message : "" %></span>
