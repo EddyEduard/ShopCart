@@ -19,13 +19,18 @@ exports.login = (req, res, next) => {
                 "string.min": "The input 'Password' length must be at least 6 characters long.",
                 "any.required": "The input 'Password' is required.",
             }),
+        rememberPassword: Joi.bool()
     });
 
     const { error } = schema.validate(req.body);
 
     if (error) {
+        const rememberedEmail = req.cookies["remembered_email"] ?? "";
+        const rememberedPassword = atob(req.cookies["remembered_password"] ?? "");
+
         res.render("auth/login", {
             title: "Sign In",
+            credentials: { email: rememberedEmail, password: rememberedPassword },
             error: { status: 400, message: error.details[0] },
             isError: true
         });
@@ -68,6 +73,7 @@ exports.register = (req, res, next) => {
                 "string.min": "The input 'Password' length must be at least 6 characters long.",
                 "any.required": "The input 'Password' is required.",
             }),
+        rememberPassword: Joi.bool()
     });
 
     const { error } = schema.validate(req.body);
