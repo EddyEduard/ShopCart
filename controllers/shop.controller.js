@@ -207,6 +207,7 @@ exports.checkout = async function (req, res) {
             totalVAT: ((totalPrice + shippingPrice) * (19 / 100)),
             totalPriceIncludingVAT: ((totalPrice + shippingPrice) + ((totalPrice + shippingPrice) * (19 / 100))),
             isUpdateCard: req.query.isUpdateCard,
+            isBillingFilled: customer.address.country != "" && customer.address.city != "" && customer.address.street != "" && customer.address.postal_code != "",
             customer,
             cart,
             products,

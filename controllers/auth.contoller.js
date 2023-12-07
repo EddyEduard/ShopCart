@@ -11,8 +11,12 @@ const logger = pino();
 
 // Customer login page.
 exports.login_view = async function (req, res) {
+    const rememberedEmail = req.cookies["remembered_email"] ?? "";
+    const rememberedPassword = atob(req.cookies["remembered_password"] ?? "");
+
     res.render("auth/login", {
         title: "Sign In",
+        credentials: { email: rememberedEmail, password: rememberedPassword },
         isError: false
     });
 }
@@ -29,6 +33,9 @@ exports.register_view = async function (req, res) {
 exports.login = async function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
+    const rememberPassword = req.body.rememberPassword;
+    const rememberedEmail = req.cookies["remembered_email"] ?? "";
+    const rememberedPassword = atob(req.cookies["remembered_password"] ?? "");
 
     try {
         const customer = await Customer.findOne({ email: email });
@@ -36,13 +43,15 @@ exports.login = async function (req, res) {
         if (customer == null) {
             res.render("auth/login", {
                 title: "Sign In",
-                error: { status: 403, message: "The email address is incorect." },
+                credentials: { email: rememberedEmail, password: rememberedPassword },
+                error: { status: 403, message: "There is no customer with this email address." },
                 isError: true
             });
         } else {
             if (await !bcrypt.compareSync(password, customer.password)) {
                 res.render("auth/login", {
                     title: "Sign In",
+                    credentials: { email: rememberedEmail, password: rememberedPassword },
                     error: { status: 403, message: "The password is incorect." },
                     isError: true
                 });
@@ -52,6 +61,17 @@ exports.login = async function (req, res) {
                 const today = new Date();
                 const expirationDate = new Date(today);
                 expirationDate.setTime(today.getTime() + (24 * 60 * 60 * 1000));
+
+                if (rememberPassword != undefined && rememberPassword == "true") {
+                    const date = new Date();
+                    date.setFullYear(2050);
+
+                    res.cookie("remembered_email", email, { expires: date, httpOnly: true });
+                    res.cookie("remembered_password", btoa(password), { expires: date, httpOnly: true });
+                } else {
+                    res.clearCookie("remembered_email");
+                    res.clearCookie("remembered_password");
+                }
 
                 res.cookie("token", token, { expires: expirationDate, httpOnly: true })
                 res.redirect("/shop/products");
@@ -68,6 +88,7 @@ exports.register = async function (req, res) {
     const lastName = req.body.lastName;
     const email = req.body.email;
     const password = req.body.password;
+    const rememberPassword = req.body.rememberPassword;
 
     try {
         const customer = new Customer({
@@ -116,6 +137,17 @@ exports.register = async function (req, res) {
                 customer_id: newCustomer.id,
                 items: []
             })).save();
+
+            if (rememberPassword != undefined && rememberPassword == "true") {
+                const date = new Date();
+                date.setFullYear(2050);
+
+                res.cookie("remembered_email", email, { expires: date, httpOnly: true });
+                res.cookie("remembered_password", btoa(password), { expires: date, httpOnly: true });
+            } else {
+                res.clearCookie("remembered_email");
+                res.clearCookie("remembered_password");
+            }
 
             res.redirect("/auth/login");
         }

@@ -7,6 +7,7 @@ const pino = require("pino");
 
 const Customer = require("../models/customer.model");
 const Cart = require("../models/cart.model");
+const Order = require("../models/order.model");
 const Review = require("../models/review.model");
 
 const logger = pino();
@@ -124,27 +125,6 @@ exports.change_password = async function (req, res) {
     }
 }
 
-// Delete account.
-exports.delete_account = async function (req, res) {
-    const customerId = req.customer.id;
-
-    try {
-        const customer = await Customer.findById(customerId);
-        const cart = await Cart.findOne({ customer_id: customerId });
-        const reviews = await Review.find({ customer_id: customerId });
-
-        for (const review of reviews)
-            await Review.findByIdAndDelete(review.id);
-
-        await Cart.findByIdAndDelete(cart.id);
-        await Customer.findByIdAndDelete(customer.id);
-
-        res.redirect("/auth/login");
-    } catch (error) {
-        logger.error(error);
-    }
-}
-
 // Edit billing information.
 exports.edit_billing = async function (req, res) {
     const customerId = req.customer.id;
@@ -249,6 +229,39 @@ exports.edit_billing = async function (req, res) {
                 cart
             });
         }
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
+// Delete account.
+exports.delete_account = async function (req, res) {
+    const customerId = req.customer.id;
+
+    try {
+        const customer = await Customer.findById(customerId);
+        const cart = await Cart.findOne({ customer_id: customerId });
+        const orders = await Order.find({ customer_id: customerId });
+        const reviews = await Review.find({ customer_id: customerId });
+
+        for (const order of orders)
+            await Order.findByIdAndDelete(order.id);
+
+        for (const review of reviews)
+            await Review.findByIdAndDelete(review.id);
+
+        await Cart.findByIdAndDelete(cart.id);
+        await Customer.findByIdAndDelete(customer.id);
+
+        const stripeCustomers = await stripe.customers.search({
+            query: `metadata[\'service\']:\'shopcart\' AND metadata[\'customer_id\']:\'${customer.id}\'`
+        });
+        const stripeCustomer = stripeCustomers.data.length > 0 ? stripeCustomers.data[0] : null;
+
+        if (stripeCustomer != null)
+            await stripe.customers.del(stripeCustomer.id);
+
+        res.redirect("/auth/login");
     } catch (error) {
         logger.error(error);
     }
