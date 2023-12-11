@@ -36,7 +36,7 @@ npm run devStart
 
 To build the application for deployment use this command:
 ```
-node server.js
+node index.js
 ```
 
 ## Management of Folder & Files
