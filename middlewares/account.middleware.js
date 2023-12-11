@@ -33,9 +33,9 @@ exports.edit_profile = async (req, res, next) => {
         phone: Joi.string()
             .min(10)
             .messages({
-                "string.empty": "The input 'Password' is not allowed to be empty.",
-                "string.min": "The input 'Password' length must be at least 10 characters long.",
-                "any.required": "The input 'Password' is required.",
+                "string.empty": "The input 'Phone' is not allowed to be empty.",
+                "string.min": "The input 'Phone' length must be at least 10 characters long.",
+                "any.required": "The input 'Phone' is required.",
             }),
         image: Joi.string()
             .allow("")
