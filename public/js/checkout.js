@@ -96,7 +96,7 @@ paymentButtonTag.addEventListener("click", _ => {
 
     paymentStarted();
 
-    if (hasPaymentMethodAdded && isUpdateCard == "false")
+    if (hasPaymentMethodAdded == "true" && isUpdateCard == "false")
         payForProducts("", "", false);
     else
         stripe.createToken(cardNumberElement, options).then(result => payForProducts(result.token.id, cardHolder, isUpdateCard));
