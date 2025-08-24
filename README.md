@@ -6,35 +6,42 @@ ShopCart is an app used for buying a wide range of products. All selected produc
 
 Below is a list of all the technologies used to develop the app. They are structured by categories.
 
-**Frontend** 
-   - HTML
-   - CSS
-   - JavaScript
+**Frontend**
+
+- HTML
+- CSS
+- JavaScript
 
 **Backend**
-   - NodeJS
+
+- NodeJS
 
 **Databases**
-   - MongoDB
+
+- MongoDB
 
 **Cloud**
-   - [Stripe](https://stripe.com/docs/api)
+
+- [Stripe](https://stripe.com/docs/api)
 
 ## Run & Build commands
 
 As the application is developed using the NodeJS to launch it in development mode or for deployment we should run some commands that allow us to perform these processes.
 
 Before executing any command, we must make sure that the dependencies (**node_modules**) are installed, otherwise we must install them using this command:
+
 ```
 npm install
 ```
 
 To run the application use this command:
+
 ```
 npm run devStart
 ```
 
 To build the application for deployment use this command:
+
 ```
 node index.js
 ```
@@ -137,9 +144,15 @@ erDiagram
 ```
 
 ## License
+
 Distributed under the MIT License. See [MIT](https://github.com/EddyEduard/ShopCart/blob/master/LICENSE) for more information.
 
 ## Contact
+
 Eduard-Nicolae - [eduard_nicolae@yahoo.com](mailTo:eduard_nicolae@yahoo.com)
 \
 Project link - [https://github.com/EddyEduard/ShopCart](https://github.com/EddyEduard/ShopCart.git)
+
+docker build . -t shop-cart:1.0
+
+docker run -itd -p 2000:2000 --name shop-cart shop-cart:1.0
