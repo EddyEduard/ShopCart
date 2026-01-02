@@ -152,7 +152,3 @@ Distributed under the MIT License. See [MIT](https://github.com/EddyEduard/ShopC
 Eduard-Nicolae - [eduard_nicolae@yahoo.com](mailTo:eduard_nicolae@yahoo.com)
 \
 Project link - [https://github.com/EddyEduard/ShopCart](https://github.com/EddyEduard/ShopCart.git)
-
-docker build . -t shop-cart:1.0
-
-docker run -itd -p 2000:2000 --name shop-cart shop-cart:1.0
